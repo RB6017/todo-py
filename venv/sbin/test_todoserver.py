@@ -9,32 +9,36 @@ def json_body(resp):
     return json.loads(resp.data.decode("utf-8"))
 
 class TestTodoserver(unittest.TestCase):
+    def setUp(self):
+        self.client = app.test_client()
+        """ Verify test pre-conditions """
+        resp = self.client.get("/tasks/")
+        self.assertEqual([], json_body(resp))
 
     def test_get_empty_list_of_tasks(self):
-        client = app.test_client()
-        resp = client.get("/tasks/")
+        resp = self.client.get("/tasks/")
         self.assertEqual(200, resp.status_code)
         data = json.loads(resp.data.decode("utf-8"))
         self.assertEqual([], data)
 
     def test_create_a_task_and_get_its_details(self):
-        client = app.test_client()
 
         """ verify test pre-conditions """
-        resp = client.get("/tasks/")
+        
+        resp = self.client.get("/tasks/")
 
         """ create a new task """
         new_task_data = {
             "summary": "Get milk",
             "description": "One gallon organic whole milk"
         }
-        resp = client.post("/tasks/",
+        resp = self.client.post("/tasks/",
                            data=json.dumps(new_task_data))
         self.assertEqual(201, resp.status_code)
         data = json_body(resp)
         self.assertIn("id", data)
         task_id = data["id"]
-        resp = client.get("/tasks/{:d}/".format(task_id))
+        resp = self.client.get("/tasks/{:d}/".format(task_id))
 
         self.assertEqual(200, resp.status_code)
 
@@ -42,5 +46,8 @@ class TestTodoserver(unittest.TestCase):
         self.assertEqual(task_id, task["id"])
         self.assertEqual("Get milk", task["summary"])
         self.assertEqual("One gallon organic whole milk", task["description"])
+
+    def test_create_multiple_tasks_and_fetch_list(self):
+        client = app.test_client
 
 

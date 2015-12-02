@@ -1,0 +1,7 @@
+*.pyc
+venv/lib/
+venv/sbin/__pycache__/
+venv/bin/
+pip-selfcheck.json
+pyvenv.cfg
+
