@@ -1,6 +1,6 @@
 *.pyc
 venv/lib/
-venv/sbin/__pycache__/
+venv/sbin/__pycache__/*.pyc
 venv/bin/
 pip-selfcheck.json
 pyvenv.cfg
