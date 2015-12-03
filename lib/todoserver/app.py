@@ -1,4 +1,4 @@
-# todoserver.py
+# todoserver/app.py
 
 from flask import Flask, make_response, request
 import json
@@ -32,7 +32,3 @@ def task_details(task_id):
     task_info = MEMORY[task_id].copy()
     task_info["id"] = task_id
     return json.dumps(task_info)
-
-
-if __name__ == "__main__":
-    app.run()
