@@ -12,6 +12,9 @@ class TodoserverApp(Flask):
     def __init__(self, name):
         self.store = TaskStore()
         super().__init__(name)
+    def erase_all_test_data(self):
+        assert self.testing
+        self.store.tasks.clear()
 
 app = TodoserverApp(__name__)
 

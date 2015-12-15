@@ -1,7 +1,7 @@
 #This is where my automated tests go!!!
 import unittest
 import json
-from todoserver import app, MEMORY
+from lib.todoserver import app
 app.testing = True
 
 def json_body(resp):
@@ -9,7 +9,7 @@ def json_body(resp):
 
 class TestTodoserver(unittest.TestCase):
     def setUp(self):
-        MEMORY.clear()
+        app.erase_all_test_data()
         self.client = app.test_client()
         """ Verify test pre-conditions """
         resp = self.client.get("/tasks/")
@@ -23,12 +23,6 @@ class TestTodoserver(unittest.TestCase):
         self.assertEqual([], data)
 
     def test_create_a_task_and_get_its_details(self):
-
-        """ verify test pre-conditions """
-        
-        resp = self.client.get("/tasks/")
-        self.assertEqual([], json_body(resp))
-
         """ create a new task """
 
         new_task_data = {
